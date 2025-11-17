@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>عرض مرعب</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    font-family: Tahoma, sans-serif;
+    overflow: hidden;
+  }
+
+  /* تأثير التلفاز */
+  .tv-effect {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: url("static.gif") repeat;
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    transition: opacity 0.25s ease-in-out;
+    z-index: 1000;
+  }
+
+  /* اهتزاز */
+  @keyframes shake {
+    0% { transform: translate(0,0); }
+    20% { transform: translate(-8px,6px); }
+    40% { transform: translate(8px,-6px); }
+    60% { transform: translate(-6px,4px); }
+    80% { transform: translate(6px,-4px); }
+    100% { transform: translate(0,0); }
+  }
+
+  .container {
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+  }
+
+  h1 {
+    color: #ff0000;
+    font-size: 26px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 12px #ff0000;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px 28px;
+    font-size: 18px;
+    border: 2px solid #ff0000;
+    border-radius: 12px;
+    background: #220000;
+    color: #ff0000;
+    cursor: pointer;
+    box-shadow: 0 0 20px #ff0000;
+    transition: 0.2s;
+  }
+
+  button:active {
+    transform: scale(0.98);
+  }
+
+  #scaryImage {
+    margin-top: 20px;
+    width: 210%;
+    max-height: 80vh;
+    display: block;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+    border: 3px solid red;
+    border-radius: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="tv-effect" id="tvFX"></div>
+
+<div class="container">
+  <h1>هل أنت مستعد؟</h1>
+
+  <button id="showBtn">عرض الصورة</button>
+
+  <!-- تبدأ بصورة بيضاء -->
+  <img id="scaryImage" src="white.jpg" alt="صورة أولية">
+</div>
+
+<script>
+  const btn = document.getElementById("showBtn");
+  const img = document.getElementById("scaryImage");
+  const tvFX = document.getElementById("tvFX");
+
+  btn.addEventListener("click", () => {
+
+    // تشغيل صراخ
+    const scream = new Audio("scream.mp3");
+    scream.play().catch(e => console.log("فشل تشغيل الصوت:", e));
+
+    // اهتزاز الهاتف
+    if (navigator.vibrate) navigator.vibrate([200, 150, 200]);
+
+    // تأثير التلفاز
+    tvFX.style.opacity = "0.8";
+
+    // اهتزاز الشاشة
+    document.body.style.animation = "shake 0.5s";
+
+    // إظهار الصورة المرعبة مؤكد ونهائي
+    setTimeout(() => {
+      console.log("تغيير الصورة إلى scary.jpg");
+      img.src = "scary.jpg";  // 🔥 هنا يتم التبديل المؤكد
+      img.onload = () => {
+        img.style.opacity = 1; // تتأكد أنها جاهزة قبل الإظهار
+      };
+    }, 300);
+
+    // إزالة تأثير التلفاز
+    setTimeout(() => {
+      tvFX.style.opacity = "0";
+    }, 1700);
+  });
+</script>
+
+</body>
+</html>
