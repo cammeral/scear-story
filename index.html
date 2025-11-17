@@ -3,12 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <title>عرض مرعب</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <style>
+  * {
+    box-sizing: border-box;
+  }
+
   body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,6 +20,7 @@
     font-family: 'Arial', sans-serif;
     overflow: hidden;
     position: relative;
+    padding: 15px;
   }
 
   /* تأثير التلفاز الأساسي */
@@ -114,7 +119,7 @@
   }
 
   .container {
-    width: 90%;
+    width: 100%;
     max-width: 400px;
     text-align: center;
     position: relative;
@@ -124,12 +129,13 @@
 
   h1 {
     color: #ff0000;
-    font-size: 28px;
-    margin-bottom: 25px;
+    font-size: clamp(22px, 6vw, 28px);
+    margin-bottom: 20px;
     text-shadow: 0 0 12px #ff0000, 0 0 25px #ff0000;
     letter-spacing: 1px;
     font-weight: bold;
     animation: textGlitch 5s infinite;
+    padding: 0 10px;
   }
 
   @keyframes textGlitch {
@@ -143,8 +149,8 @@
 
   button {
     width: 100%;
-    padding: 16px 30px;
-    font-size: 20px;
+    padding: 16px 20px;
+    font-size: clamp(18px, 5vw, 20px);
     border: 2px solid #ff0000;
     border-radius: 12px;
     background: #220000;
@@ -185,9 +191,11 @@
   }
 
   #scaryImage {
-    margin-top: 25px;
-    width: 210%;
-    max-height: 80vh;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 70vh;
     display: block;
     opacity: 0;
     transition: opacity 0.8s ease;
@@ -195,6 +203,7 @@
     border-radius: 10px;
     filter: contrast(1.2) brightness(0.9) sepia(0.2);
     box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+    object-fit: contain;
   }
 
   /* تأثير وميض أحمر */
@@ -225,6 +234,47 @@
     0% { transform: scale(1); }
     90% { transform: scale(1.05); }
     100% { transform: scale(1); }
+  }
+
+  /* تحسينات للهواتف */
+  @media (max-width: 480px) {
+    body {
+      padding: 10px;
+    }
+    
+    .container {
+      max-width: 100%;
+    }
+    
+    h1 {
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+    
+    button {
+      padding: 14px 16px;
+      font-size: 18px;
+    }
+    
+    #scaryImage {
+      max-height: 60vh;
+      margin-top: 15px;
+    }
+  }
+
+  @media (max-width: 320px) {
+    h1 {
+      font-size: 20px;
+    }
+    
+    button {
+      padding: 12px 14px;
+      font-size: 16px;
+    }
+    
+    #scaryImage {
+      max-height: 50vh;
+    }
   }
 </style>
 </head>
@@ -303,7 +353,7 @@
     }, 2000);
 
     // تغيير نص الزر بعد النقر
-    btn.textContent = "لا تنظر!";
+    btn.textContent = "سوف تندم!";
     btn.disabled = true;
     
     // إضافة تأثيرات إضافية بعد فترة
