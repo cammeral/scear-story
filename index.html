@@ -13,82 +13,231 @@
     justify-content: center;
     align-items: center;
     background: #000;
-    font-family: Tahoma, sans-serif;
+    font-family: 'Arial', sans-serif;
     overflow: hidden;
+    position: relative;
   }
 
-  /* تأثير التلفاز */
-  .tv-effect {
+  /* تأثير التلفاز الأساسي */
+  .tv-overlay {
     position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background: url("static.gif") repeat;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      linear-gradient(rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.25) 50%),
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.15) 0px, rgba(0, 0, 0, 0.15) 1px, transparent 1px, transparent 2px);
+    background-size: 100% 2px, 100% 4px;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+    mix-blend-mode: overlay;
+  }
+
+  /* تأثير التلفاز - خطوط المسح */
+  .tv-scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.03) 50%,
+      rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 1001;
+    animation: scanlines 0.15s linear infinite;
+  }
+
+  @keyframes scanlines {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  /* تأثير التلفاز - تشويش */
+  .tv-static {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     opacity: 0;
     pointer-events: none;
-    mix-blend-mode: screen;
-    transition: opacity 0.25s ease-in-out;
-    z-index: 1000;
+    z-index: 1002;
+    mix-blend-mode: overlay;
+    transition: opacity 0.3s ease;
   }
 
   /* اهتزاز */
   @keyframes shake {
-    0% { transform: translate(0,0); }
-    20% { transform: translate(-8px,6px); }
-    40% { transform: translate(8px,-6px); }
-    60% { transform: translate(-6px,4px); }
-    80% { transform: translate(6px,-4px); }
-    100% { transform: translate(0,0); }
+    0% { transform: translate(0,0) rotate(0deg); }
+    10% { transform: translate(-8px,6px) rotate(-1deg); }
+    20% { transform: translate(8px,-6px) rotate(1deg); }
+    30% { transform: translate(-6px,4px) rotate(0deg); }
+    40% { transform: translate(6px,-4px) rotate(1deg); }
+    50% { transform: translate(-4px,2px) rotate(-1deg); }
+    60% { transform: translate(4px,-2px) rotate(0deg); }
+    70% { transform: translate(-2px,1px) rotate(1deg); }
+    80% { transform: translate(2px,-1px) rotate(-1deg); }
+    90% { transform: translate(-1px,0px) rotate(0deg); }
+    100% { transform: translate(0,0) rotate(0deg); }
+  }
+
+  /* تأثير وميض */
+  @keyframes flicker {
+    0% { opacity: 0.97; }
+    5% { opacity: 0.95; }
+    10% { opacity: 0.98; }
+    15% { opacity: 0.92; }
+    20% { opacity: 0.99; }
+    25% { opacity: 0.93; }
+    30% { opacity: 1; }
+    35% { opacity: 0.91; }
+    40% { opacity: 0.98; }
+    45% { opacity: 0.89; }
+    50% { opacity: 0.95; }
+    55% { opacity: 0.87; }
+    60% { opacity: 0.94; }
+    65% { opacity: 0.9; }
+    70% { opacity: 0.92; }
+    75% { opacity: 0.88; }
+    80% { opacity: 0.9; }
+    85% { opacity: 0.86; }
+    90% { opacity: 0.89; }
+    95% { opacity: 0.85; }
+    100% { opacity: 0.97; }
   }
 
   .container {
     width: 90%;
     max-width: 400px;
     text-align: center;
+    position: relative;
+    z-index: 10;
+    animation: flicker 0.3s infinite;
   }
 
   h1 {
     color: #ff0000;
-    font-size: 26px;
-    margin-bottom: 20px;
-    text-shadow: 0 0 12px #ff0000;
+    font-size: 28px;
+    margin-bottom: 25px;
+    text-shadow: 0 0 12px #ff0000, 0 0 25px #ff0000;
+    letter-spacing: 1px;
+    font-weight: bold;
+    animation: textGlitch 5s infinite;
+  }
+
+  @keyframes textGlitch {
+    0%, 100% { transform: translateX(0); }
+    95% { transform: translateX(0); }
+    96% { transform: translateX(-2px); }
+    97% { transform: translateX(2px); }
+    98% { transform: translateX(-1px); }
+    99% { transform: translateX(1px); }
   }
 
   button {
     width: 100%;
-    padding: 14px 28px;
-    font-size: 18px;
+    padding: 16px 30px;
+    font-size: 20px;
     border: 2px solid #ff0000;
     border-radius: 12px;
     background: #220000;
     color: #ff0000;
     cursor: pointer;
-    box-shadow: 0 0 20px #ff0000;
-    transition: 0.2s;
+    box-shadow: 0 0 20px #ff0000, 0 0 40px rgba(255, 0, 0, 0.5);
+    transition: 0.3s;
+    font-weight: bold;
+    position: relative;
+    overflow: hidden;
+  }
+
+  button:hover {
+    background: #330000;
+    box-shadow: 0 0 25px #ff0000, 0 0 50px rgba(255, 0, 0, 0.7);
   }
 
   button:active {
     transform: scale(0.98);
   }
 
+  button::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: rotate(45deg);
+    transition: all 0.5s;
+    opacity: 0;
+  }
+
+  button:hover::after {
+    opacity: 1;
+    transform: rotate(45deg) translate(10%, 10%);
+  }
+
   #scaryImage {
-    margin-top: 20px;
+    margin-top: 25px;
     width: 210%;
     max-height: 80vh;
     display: block;
     opacity: 0;
-    transition: opacity 1.2s ease;
+    transition: opacity 0.8s ease;
     border: 3px solid red;
     border-radius: 10px;
+    filter: contrast(1.2) brightness(0.9) sepia(0.2);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.7);
+  }
+
+  /* تأثير وميض أحمر */
+  .red-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.3);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 999;
+    transition: opacity 0.1s;
+  }
+
+  /* تأثير تشويه الصورة */
+  @keyframes distort {
+    0% { filter: contrast(1.2) brightness(0.9) sepia(0.2); }
+    25% { filter: contrast(1.3) brightness(0.8) sepia(0.3) hue-rotate(5deg); }
+    50% { filter: contrast(1.1) brightness(0.85) sepia(0.25) hue-rotate(-5deg); }
+    75% { filter: contrast(1.4) brightness(0.75) sepia(0.35) hue-rotate(3deg); }
+    100% { filter: contrast(1.2) brightness(0.9) sepia(0.2); }
+  }
+
+  /* تأثير توقف مفاجئ */
+  @keyframes suddenStop {
+    0% { transform: scale(1); }
+    90% { transform: scale(1.05); }
+    100% { transform: scale(1); }
   }
 </style>
 </head>
 
 <body>
 
-<div class="tv-effect" id="tvFX"></div>
+<div class="tv-overlay"></div>
+<div class="tv-scanlines"></div>
+<div class="tv-static" id="tvStatic"></div>
+<div class="red-flash" id="redFlash"></div>
 
 <div class="container">
-  <h1>----</h1>
+  <h1>هل أنت مستعد؟</h1>
 
   <button id="showBtn">عرض الصورة</button>
 
@@ -99,36 +248,82 @@
 <script>
   const btn = document.getElementById("showBtn");
   const img = document.getElementById("scaryImage");
-  const tvFX = document.getElementById("tvFX");
+  const tvStatic = document.getElementById("tvStatic");
+  const redFlash = document.getElementById("redFlash");
+  const container = document.querySelector('.container');
 
   btn.addEventListener("click", () => {
-
+    // إيقاف أي تأثيرات سابقة
+    document.body.style.animation = 'none';
+    img.style.animation = 'none';
+    
     // تشغيل صراخ
     const scream = new Audio("scream.mp3");
     scream.play().catch(e => console.log("فشل تشغيل الصوت:", e));
 
     // اهتزاز الهاتف
-    if (navigator.vibrate) navigator.vibrate([200, 150, 200]);
+    if (navigator.vibrate) navigator.vibrate([200, 100, 200, 100, 300]);
 
-    // تأثير التلفاز
-    tvFX.style.opacity = "0.8";
+    // تأثير وميض أحمر سريع
+    redFlash.style.opacity = "0.7";
+    setTimeout(() => {
+      redFlash.style.opacity = "0";
+    }, 150);
 
-    // اهتزاز الشاشة
-    document.body.style.animation = "shake 0.5s";
+    // تشغيل تأثير التشويش
+    tvStatic.style.opacity = "0.7";
+    
+    // اهتزاز الشاشة بقوة
+    document.body.style.animation = "shake 0.8s ease-in-out";
+    
+    // إضافة تأثير توقف مفاجئ للصورة
+    container.style.animation = "suddenStop 0.5s ease-in-out";
 
-    // إظهار الصورة المرعبة مؤكد ونهائي
+    // إظهار الصورة المرعبة مع تأثيرات متعددة
     setTimeout(() => {
       console.log("تغيير الصورة إلى scary.jpg");
-      img.src = "scary.jpg";  // 🔥 هنا يتم التبديل المؤكد
+      img.src = "scary.jpg";
       img.onload = () => {
-        img.style.opacity = 1; // تتأكد أنها جاهزة قبل الإظهار
+        img.style.opacity = 1;
+        img.style.animation = "distort 0.5s infinite";
+        
+        // وميض إضافي عند ظهور الصورة
+        setTimeout(() => {
+          redFlash.style.opacity = "0.4";
+          setTimeout(() => {
+            redFlash.style.opacity = "0";
+          }, 100);
+        }, 300);
       };
-    }, 300);
+    }, 500);
 
-    // إزالة تأثير التلفاز
+    // إزالة تأثير التشويش تدريجياً
     setTimeout(() => {
-      tvFX.style.opacity = "0";
-    }, 1700);
+      tvStatic.style.opacity = "0";
+    }, 2000);
+
+    // تغيير نص الزر بعد النقر
+    btn.textContent = "لا تنظر!";
+    btn.disabled = true;
+    
+    // إضافة تأثيرات إضافية بعد فترة
+    setTimeout(() => {
+      // وميض عشوائي إضافي
+      const randomFlash = () => {
+        if (Math.random() > 0.7) {
+          redFlash.style.opacity = "0.2";
+          setTimeout(() => {
+            redFlash.style.opacity = "0";
+          }, 100);
+        }
+      };
+      
+      // وميض عشوائي لمدة 5 ثوان
+      const flashInterval = setInterval(randomFlash, 300);
+      setTimeout(() => {
+        clearInterval(flashInterval);
+      }, 5000);
+    }, 2000);
   });
 </script>
 
